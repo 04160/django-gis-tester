@@ -15,6 +15,7 @@ Coordinates:
 >CRUD to create a seperate locations
 >>Create form to add new locations
 >>Create template to display current locations and filter them based on their values
+>>Add signal for location just to test out how it works
 >>Make proximity calculations, distance calculations based on existing locations. How far is x from y.
 
 >Make migration from 

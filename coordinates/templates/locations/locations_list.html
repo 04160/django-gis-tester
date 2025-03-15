@@ -2,17 +2,50 @@
 
 {% block content %}
     <div>
-        <div>
-            test
-        </div>
-        <div>
-            ting ting
-        </div>
-        <div>
-            
-            {% for location in locations %}
-                location
-            {% endfor %}
-        </div>
+        <form method="GET">
+            <input type="text" name="search" placeholder="Search by name or coordinates" value="{{ request.GET.search }}">
+            <button type="submit">Filter</button>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Location name</th>
+                    <th>Lattitude</th>
+                    <th>Longitude</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for location in location_list %}
+                    <tr>
+                        <td>{{ location.id }}</td>
+                        <td>{{ location.name }}</td>
+                        <td>{{ location.lat }}</td>
+                        <td>{{ location.lng }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        No results found
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if is_paginated %}
+            <div>
+                {% if page_obj.has_previous %}
+                    <a href="?page=1{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">First</a>
+                    <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Previous</a>
+                {% endif %}
+
+                <span>Page {{ page_obj.number }} of {{ paginator.num_pages }}</span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Next</a>
+                    <a href="?page={{ paginator.num_pages }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">Last</a>
+                {% endif %}
+            </div>
+        {% endif %}
     </div>
 {% endblock content %}

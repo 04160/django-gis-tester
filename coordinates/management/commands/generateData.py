@@ -11,9 +11,7 @@ class Command(BaseCommand):
         parser.add_argument("coord_count", nargs="+", type=int)
 
     def handle(self, *args, **options):
-        print('command works')
-        print('args', args)
-        print('options', options)
+        oldLocationCount = Location.objects.count()
 
         for count in range(options['coord_count'][0]):
             lat, lng = self._calculateCoords()
@@ -23,6 +21,9 @@ class Command(BaseCommand):
                 lat=lat,
                 lng=lng
             )
+
+        newLocationCount = Location.objects.count()
+        print(f"Old location count: {oldLocationCount}. New count: {newLocationCount}")
 
     def _calculateCoords(str: str) -> tuple[float, float]:
         lat = 56.8801729 + (random.randint(-200, 200) / 100)
