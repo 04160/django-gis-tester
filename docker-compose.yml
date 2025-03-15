@@ -1,14 +1,22 @@
 services:
   db:
     image: postgres
+    container_name: django_test_db
+    ports:
+      - 5432:5432
     volumes:
       - ./data/db:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    networks:
+      - project
   web:
     build: .
+    container_name: django_test_web
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
@@ -18,5 +26,11 @@ services:
       - POSTGRES_NAME=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
     depends_on:
       - db
+    networks:
+      - project
+networks:
+  project:

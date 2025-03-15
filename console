@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+
+info() {
+    time=$(date '+%H:%M:%S')
+    echo -e "\033[94$time | $1\033[39m"
+}
+
+success() {
+    time=$(date '+%H:%M:%S')
+    echo -e "\033[92$time | $1\033[39m"
+}
+
+warning() {
+    time=$(date '+%H:%M:%S')
+    echo -e "\033[93$time | $1\033[39m"
+}
+
+error() {
+    time=$(date '+%H:%M:%S')
+    echo -e "\033[91$time | $1\033[39m"
+}
+
+down() {
+    info "Down"
+    docker-compose down -v 
+}
+
+build() {
+    info "Building project"
+    docker-compose build 
+}
+
+up() {
+    info "Up"
+    docker-compose up
+}
+
+rerun() {
+    down
+    build
+    up
+}
+
+migrate() {
+    info "Migrate"
+    docker compose run web python manage.py migrate
+}
+
+test() {
+    info "test"
+}
+
+comm() {
+    if [[ -z "$1" ]]; then
+        error "No command specified for 'comm'. Usage: comm <django_command> [args...]"
+        return 1
+    fi
+    
+    info "Running: docker compose run web python manage.py $*"
+    docker compose run web python manage.py "$@"
+}
+
+if [[ -n "$1" ]]; then
+    command="$1"
+    shift  # Remove first argument so that "$@" contains only the function parameters
+
+    if [[ -n "$(type -t "${command}")" ]] && [[ "$(type -t "${command}")" == function ]]; then
+        "$command" "$@"
+    else
+        error "Command not found: $command"
+        exit 1
+    fi
+else
+    warning "Specify command"
+    exit 1
+fi

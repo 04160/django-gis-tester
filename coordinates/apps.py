@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class CrudtestConfig(AppConfig):
+class CoordinatesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'crudTest'
+    name = 'coordinates'
