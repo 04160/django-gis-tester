@@ -1,0 +1,48 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+    <div class="">
+        <div>
+            <h2>Create</h2>
+        </div>
+        <div>
+            <form
+                method="post"
+                action="{% url 'location-create' entity_slug=view.kwargs.entity_slug %}"
+            >
+                <div class="field">
+                    {{ form.as_p }}
+                    {% csrf_token %}
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- <div class="columns is-multiline is-centered">
+        <div class="column is-6-desktop">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-header-title has-text-weight-light is-size-3">{% trans 'Create Customer' %}</h2>
+                </div>
+                <div class="card-content">
+                    <form method="post"
+                          action="{% url 'django_ledger:customer-create' entity_slug=view.kwargs.entity_slug %}">
+
+                        <div class="field">
+                            {{ form.as_p }}
+                            {% csrf_token %}
+                        </div>
+
+                        <div class="field">
+                            <button class="button is-primary is-small is-fullwidth">{% trans 'Create Customer' %}</button>
+                            <a href="{% url 'django_ledger:customer-list' entity_slug=view.kwargs.entity_slug %}"
+                               class="button is-dark is-small is-fullwidth mt-2">{% trans 'Go Back' %}</a>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div> -->
+{% endblock %}

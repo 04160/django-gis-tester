@@ -1,21 +1,11 @@
-
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from coordinates.models import Location
+from coordinates.models import LocationModel
+from coordinates.forms import LocationModelForm
 from django.db.models import Q
 
-# class CustomerModelListView(DjangoLedgerSecurityMixIn,
-    #                         CustomerModelModelViewQuerySetMixIn,
-    #                         ListView):
-    # template_name = 'django_ledger/customer/customer_list.html'
-    # PAGE_TITLE = _('Customer List')
-    # extra_context = {
-    #     'page_title': PAGE_TITLE,
-    #     'header_title': PAGE_TITLE,
-    #     'header_subtitle_icon': 'dashicons:businesswoman'
-    # }
-    # context_object_name = 'customers'
+
 class LocationModelListView(ListView):
-    model = Location
+    model = LocationModel
     context_object_name = 'location_list'
     template_name = 'locations/locations_list.html'
     paginate_by = 5
@@ -34,10 +24,17 @@ class LocationModelListView(ListView):
         return queryset
 
 
-# class LocationModelCreateView(CreateView):
+class LocationModelCreateView(CreateView):
+    template_name = 'locations/locations_create.html'
+    form_class = LocationModelForm
+    context_object_name = 'location'
 
 
-# class LocationModelUpdateView(UpdateView):
+class LocationModelUpdateView(UpdateView):
+    template_name = 'locations/locations_update.html'
+    form_class = LocationModelForm
+    context_object_name = 'location'
+    slug_field = 'id'
 
 
 # class LocationModelDeleteView(DeleteView):

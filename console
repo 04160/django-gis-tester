@@ -60,6 +60,34 @@ comm() {
     docker compose run web python manage.py "$@"
 }
 
+new_super() {
+    # Example ./console new_super --username=admin2 --email=admin2@admin2.com --pass=pass2
+    local username=""
+    local email=""
+    local password=""
+
+    # Parse input arguments
+    for arg in "$@"; do
+        case $arg in
+            --username=*)
+                username="${arg#*=}"
+                ;;
+            --email=*)
+                email="${arg#*=}"
+                ;;
+            --pass=*)
+                password="${arg#*=}"
+                ;;
+            *)
+                echo "Unknown argument: $arg"
+                exit 1
+                ;;
+        esac
+    done
+
+    docker compose run -e DJANGO_SUPERUSER_PASSWORD="$password" web python manage.py createsuperuser --username "$username" --email "$email" --noinput
+}
+
 if [[ -n "$1" ]]; then
     command="$1"
     shift  # Remove first argument so that "$@" contains only the function parameters
